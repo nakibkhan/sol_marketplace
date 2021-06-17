@@ -1,3 +1,3 @@
-# Getting started with Solidity Eth App
+# sol_marketplace
 
-This is a sample project setup for a React client app communicating with backend Block Chain smart contract
+Blockchain Marketplace example using Solidity and React
