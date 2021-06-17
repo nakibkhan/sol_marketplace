@@ -1,0 +1,10 @@
+{
+  "name": "eth-server",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "babel-register": "^6.26.0",
+    "web3": "^1.3.6"
+  }
+}
