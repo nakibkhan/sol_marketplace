@@ -4,7 +4,7 @@ contract('Marketplace', (accounts) =>{
   let marketplace
 
   before(async () =>  {
-      marketplace = await Marketplace.deployed();
+      marketplace = await Marketplace.deployed()
   })
 
   describe('deployment', async() =>{
@@ -15,5 +15,26 @@ contract('Marketplace', (accounts) =>{
       assert.notEqual(address, null)
       assert.notEqual(address, undefined)
     })
+
+    it('has a name', async() => {
+      const name = await marketplace.name()
+      assert.equal(name, "Nakib Marketplace")
+    })
+
+    describe('products', async () =>{
+      let result, productCount
+
+      before(async() =>{
+        result = await marketplace.createProduct()
+        productCount = await marketplace.productCount()
+      })
+
+      it('creates product', async() =>{
+        assert.equal(productCount, 1)
+      })
+
+
+    })
   })
+
 })
