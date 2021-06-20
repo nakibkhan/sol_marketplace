@@ -1,5 +1,9 @@
 const Marketplace = artifacts.require("./Marketplace.sol");
 
+require('chai')
+  .use(require('chai-as-promised'))
+  .should()
+
 contract('Marketplace', ([deployer, seller, buyer]) =>{
   let marketplace
 
@@ -37,6 +41,8 @@ contract('Marketplace', ([deployer, seller, buyer]) =>{
         assert.equal(event.price, web3.utils.toWei('1', 'Ether'), 'Product Price is correct')
         assert.equal(event.owner, seller, 'Product Owner is correct')
         assert.equal(event.purchased, false, 'Purchased Status is correct')
+
+        await marketplace.createProduct('', web3.utils.toWei('1', 'Ether'), {from: seller}).should.be.rejected
       })
 
       it('lists product', async() =>{
@@ -82,7 +88,17 @@ contract('Marketplace', ([deployer, seller, buyer]) =>{
         const expectedBalance = oldSellerBalance.add(price).toString()
 
         assert.equal(expectedBalance, newSellerBalance)
-        
+      })
+
+      // // FAILURE: Tries to buy a product that does not exist
+      describe('product that does not exist', async () => {
+        it('blank product', async()  =>{
+          await marketplace.createProduct('', web3.utils.toWei('1', 'Ether'), {from: seller}).should.be.rejected
+        });
+
+        it('blank price', async() =>{
+          await marketplace.createProduct('Funny Bone Tickets', 0, {from: seller}).should.be.rejected
+        })
       })
 
     })
