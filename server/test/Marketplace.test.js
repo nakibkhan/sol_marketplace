@@ -93,11 +93,11 @@ contract('Marketplace', ([deployer, seller, buyer]) =>{
       // // FAILURE: Tries to buy a product that does not exist
       describe('product that does not exist', async () => {
         it('blank product', async()  =>{
-          await marketplace.createProduct('', web3.utils.toWei('1', 'Ether'), {from: seller}).should.be.rejected
+          await marketplace.purchaseProduct('Some other product', {from: buyer, value: web3.utils.toWei('1', 'Ether')}).should.be.rejected
         });
 
         it('blank price', async() =>{
-          await marketplace.createProduct('Funny Bone Tickets', 0, {from: seller}).should.be.rejected
+          await marketplace.purchaseProduct('Funny Bone Tickets', {from: buyer, value: web3.utils.toWei('0.5', 'Ether')}).should.be.rejected
         })
       })
 
