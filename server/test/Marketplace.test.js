@@ -90,14 +90,21 @@ contract('Marketplace', ([deployer, seller, buyer]) =>{
         assert.equal(expectedBalance, newSellerBalance)
       })
 
-      // // FAILURE: Tries to buy a product that does not exist
-      describe('product that does not exist', async () => {
-        it('blank product', async()  =>{
-          await marketplace.purchaseProduct('Some other product', {from: buyer, value: web3.utils.toWei('1', 'Ether')}).should.be.rejected
-        });
+      describe('Failure purchasing product', async () => {
+        it('Product ID is not valid', async()  =>{
+          await marketplace.purchaseProduct(99 , {from: buyer, value: web3.utils.toWei('1', 'Ether')}).should.be.rejected
+        })
 
-        it('blank price', async() =>{
-          await marketplace.purchaseProduct('Funny Bone Tickets', {from: buyer, value: web3.utils.toWei('0.5', 'Ether')}).should.be.rejected
+        it('Product price paid is lower than asking value', async() =>{
+          await marketplace.purchaseProduct(productCount, {from: buyer, value: web3.utils.toWei('0.5', 'Ether')}).should.be.rejected
+        })
+
+        it('Product is purchased twice', async()=>{
+          await marketplace.purchaseProduct(productCount, {from: deployer, value: web3.utils.toWei('1', 'Ether')}).should.be.rejected
+        })
+
+        it('Buyer can not be the seller', async() =>{
+          await marketplace.purchaseProduct(productCount, {from: buyer, value: web3.utils.toWei('1', 'Ether')}).should.be.rejected
         })
       })
 
